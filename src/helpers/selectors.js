@@ -35,4 +35,23 @@ export function getInterview(state, interview) {
   };
 }
 
-export function getInterviewersForDay(state, day) {}
+export function getInterviewersForDay(state, day) {
+  const days = state.days;
+  const interviewers = state.interviewers;
+  //returns empty days data is empty
+  if (days.length === 0) {
+    return [];
+  }
+  //return empty if day is not found
+  let selectedDay = days.filter((dayObj) => dayObj.name === day)[0];
+  if (!selectedDay) {
+    return [];
+  }
+
+  //push interviewers obj that matches id to interviewersforday array
+  let interviewersForDay = [];
+  for (let interviewerId of selectedDay.interviewers) {
+    interviewersForDay.push(interviewers[interviewerId]);
+  }
+  return interviewersForDay;
+}
