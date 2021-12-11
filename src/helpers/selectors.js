@@ -17,3 +17,20 @@ export function getAppointmentsForDay(state, day) {
   }
   return appointmentsForDay;
 }
+
+export function getInterview(state, interview) {
+  //return null when no interview is passed in
+  if (!interview) {
+    return null;
+  }
+
+  //find id of interviewer
+  const interviewerId = interview.interviewer;
+  const interviewer = state.interviewers[interviewerId];
+
+  //return object with student, interviewer obj with name and avatar
+  return {
+    student: interview.student,
+    interviewer: interviewer,
+  };
+}
