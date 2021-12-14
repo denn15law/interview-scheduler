@@ -63,9 +63,7 @@ export default function Application() {
       [apptId]: appointment,
     };
     setState({ ...state, appointments });
-    return axios.delete(`http://localhost:8001/api/appointments/${apptId}`, {
-      interview,
-    });
+    return axios.delete(`http://localhost:8001/api/appointments/${apptId}`);
   };
 
   const schedule = dailyAppointments.map((appointment) => {
