@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "components/Application.scss";
 import axios from "axios";
 import DayList from "./DayList";
@@ -10,7 +9,7 @@ import {
   getInterviewersForDay,
 } from "helpers/selectors";
 
-export default function Application(props) {
+export default function Application() {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -38,6 +37,37 @@ export default function Application(props) {
   const dailyAppointments = getAppointmentsForDay(state, state.day);
   const dailyInterviewers = getInterviewersForDay(state, state.day);
 
+  const bookInterview = (apptId, interview) => {
+    // console.log("appt Id", apptId, " interview obj", interview);
+    const appointment = {
+      ...state.appointments[apptId],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [apptId]: appointment,
+    };
+    setState({ ...state, appointments });
+    return axios.put(`http://localhost:8001/api/appointments/${apptId}`, {
+      interview,
+    });
+  };
+
+  const cancelInterview = (apptId) => {
+    const appointment = {
+      ...state.appointments[apptId],
+      interview: null,
+    };
+    const appointments = {
+      ...state.appointments,
+      [apptId]: appointment,
+    };
+    setState({ ...state, appointments });
+    return axios.delete(`http://localhost:8001/api/appointments/${apptId}`, {
+      interview,
+    });
+  };
+
   const schedule = dailyAppointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
     return (
@@ -47,6 +77,8 @@ export default function Application(props) {
         time={appointment.time}
         interview={interview}
         interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
   });
