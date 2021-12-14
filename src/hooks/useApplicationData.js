@@ -25,13 +25,13 @@ export function useApplicationData() {
       }
     }
     const days = state.days.map((day) => {
-      if (day.name !== state.day) {
-        return day;
-      } else {
+      if (day.name === state.day) {
         return {
           ...day,
           spots,
         };
+      } else {
+        return day;
       }
     });
     setState({ ...state, days });
