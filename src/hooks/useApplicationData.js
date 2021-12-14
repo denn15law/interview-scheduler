@@ -11,37 +11,65 @@ export function useApplicationData() {
 
   const setDay = (day) => setState({ ...state, day });
 
+  const updateSpotsForDay = (state) => {
+    // console.log(state.appointments);
+    let spots = 0;
+    for (let day of state.days) {
+      if (day.name === state.day) {
+        for (let id of day.appointments) {
+          // console.log(state.appointments[id]);
+          if (state.appointments[id].interview === null) {
+            spots++;
+          }
+        }
+      }
+    }
+    const days = state.days.map((day) => {
+      if (day.name !== state.day) {
+        return day;
+      } else {
+        return {
+          ...day,
+          spots,
+        };
+      }
+    });
+    setState({ ...state, days });
+  };
+
   const bookInterview = (apptId, interview) => {
+    const appointment = {
+      ...state.appointments[apptId],
+      interview: { ...interview },
+    };
+    const appointments = {
+      ...state.appointments,
+      [apptId]: appointment,
+    };
     return axios
       .put(`http://localhost:8001/api/appointments/${apptId}`, {
         interview,
       })
       .then(() => {
-        const appointment = {
-          ...state.appointments[apptId],
-          interview: { ...interview },
-        };
-        const appointments = {
-          ...state.appointments,
-          [apptId]: appointment,
-        };
         setState({ ...state, appointments });
+        updateSpotsForDay({ ...state, appointments });
       });
   };
 
   const cancelInterview = (apptId) => {
+    const appointment = {
+      ...state.appointments[apptId],
+      interview: null,
+    };
+    const appointments = {
+      ...state.appointments,
+      [apptId]: appointment,
+    };
     return axios
       .delete(`http://localhost:8001/api/appointments/${apptId}`)
       .then(() => {
-        const appointment = {
-          ...state.appointments[apptId],
-          interview: null,
-        };
-        const appointments = {
-          ...state.appointments,
-          [apptId]: appointment,
-        };
         setState({ ...state, appointments });
+        updateSpotsForDay({ ...state, appointments });
       });
   };
 
