@@ -38,32 +38,37 @@ export default function Application() {
   const dailyInterviewers = getInterviewersForDay(state, state.day);
 
   const bookInterview = (apptId, interview) => {
-    // console.log("appt Id", apptId, " interview obj", interview);
-    const appointment = {
-      ...state.appointments[apptId],
-      interview: { ...interview },
-    };
-    const appointments = {
-      ...state.appointments,
-      [apptId]: appointment,
-    };
-    setState({ ...state, appointments });
-    return axios.put(`http://localhost:8001/api/appointments/${apptId}`, {
-      interview,
-    });
+    return axios
+      .put(`http://localhost:8001/api/appointments/${apptId}`, {
+        interview,
+      })
+      .then(() => {
+        const appointment = {
+          ...state.appointments[apptId],
+          interview: { ...interview },
+        };
+        const appointments = {
+          ...state.appointments,
+          [apptId]: appointment,
+        };
+        setState({ ...state, appointments });
+      });
   };
 
   const cancelInterview = (apptId) => {
-    const appointment = {
-      ...state.appointments[apptId],
-      interview: null,
-    };
-    const appointments = {
-      ...state.appointments,
-      [apptId]: appointment,
-    };
-    setState({ ...state, appointments });
-    return axios.delete(`http://localhost:8001/api/appointments/${apptId}`);
+    return axios
+      .delete(`http://localhost:8001/api/appointments/${apptId}`)
+      .then(() => {
+        const appointment = {
+          ...state.appointments[apptId],
+          interview: null,
+        };
+        const appointments = {
+          ...state.appointments,
+          [apptId]: appointment,
+        };
+        setState({ ...state, appointments });
+      });
   };
 
   const schedule = dailyAppointments.map((appointment) => {
