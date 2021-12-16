@@ -4,6 +4,14 @@ Interview Scheduler is a React application which users can book interviews based
 
 ## Screenshots
 
+!["Home Screen when API is running and populated with data, here you can edit/delete existing interviews, add by clicking the plus or view other days"](https://github.com/denn15law/interview-scheduler/blob/master/docs/schedulerHome.png)
+
+!["Clicking the plus button will show this form component"](https://github.com/denn15law/interview-scheduler/blob/master/docs/scheduler-new.png)
+
+!["Clicking the edit button will show the form populated with the existing data"](https://github.com/denn15law/interview-scheduler/blob/master/docs/scheudler-edit.png)
+
+!["Deleting an interview will prompt a confirm component for validation"](https://github.com/denn15law/interview-scheduler/blob/master/docs/scheduler-delete.png)
+
 ## Setup
 
 Install dependencies with `npm install`.
