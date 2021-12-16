@@ -12,12 +12,10 @@ export function useApplicationData() {
   const setDay = (day) => setState({ ...state, day });
 
   const updateSpotsForDay = (state) => {
-    // console.log(state.appointments);
     let spots = 0;
     for (let day of state.days) {
       if (day.name === state.day) {
         for (let id of day.appointments) {
-          // console.log(state.appointments[id]);
           if (state.appointments[id].interview === null) {
             spots++;
           }
